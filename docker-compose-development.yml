@@ -1,0 +1,54 @@
+version: "3"
+services:
+  backend:
+    # image: node:alpine
+    build: ./backend
+    volumes:
+      - ./backend/:/usr/app
+      - /usr/app/node_modules
+    working_dir: /usr/app
+    depends_on:
+      - database
+    environment:
+      NODE_ENV: development
+      JWT_KEY: 757f79f5ea44b121a94cf61e6e194142e11fd032307fb7d11a1904822b62148f0b0a213f3eef32123289eb29d87b496f414241d71310c5226c3d245a4611428f
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    command: /bin/bash -c "./wait-for-it.sh database-container:3306 -t 0 && node_modules/.bin/sequelize db:migrate && npm run dev"
+    container_name: backend-container
+  frontend:
+    # image: node:alpine
+    build: ./frontend/
+    volumes:
+      - ./frontend/:/usr/app
+      - /usr/app/node_modules
+    working_dir: /usr/app
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4200:4200
+    expose:
+      - 4200
+    command: npm start
+    restart: always
+    container_name: frontend-container
+  database:
+    image: mysql:latest
+    container_name: database-container
+    restart: always
+    environment:
+      MYSQL_DATABASE: catz
+      MYSQL_ROOT_PASSWORD: catzPassword
+    # ports:
+    #   - 3306:3306
+    # expose:
+    #   - 3306
+    volumes:
+      # - my-db:/var/lib/mysql
+      - ./database/sql-scripts/:/docker-entrypoint-initdb.d/
+# volumes:
+#   my-db:

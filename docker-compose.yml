@@ -1,0 +1,59 @@
+version: "3"
+services:
+  backend:
+    build: ./backend/
+    working_dir: /usr/app
+    depends_on:
+      - database
+    environment:
+      NODE_ENV: prod
+      JWT_KEY: 757f79f5ea44b121a94cf61e6e194142e11fd032307fb7d11a1904822b62148f0b0a213f3eef32123289eb29d87b496f414241d71310c5226c3d245a4611428f
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    command: /bin/bash -c "./wait-for-it.sh database-container:3306 -t 0 && node_modules/.bin/sequelize db:migrate && npm run dev"
+    hostname: backend-container
+    networks:
+      - app-network
+  frontend:
+    build: ./frontend/
+    volumes:
+      - ./frontend/:/usr/app
+      - /usr/app/node_modules
+    working_dir: /usr/app
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: development
+    ports:
+      - 4200:4200
+    expose:
+      - 4200
+    command: npm start
+    restart: always
+    hostname: frontend-container
+    networks:
+      - app-network
+  database:
+    image: 318279325500.dkr.ecr.us-west-2.amazonaws.com/catz-database:latest
+    hostname: database-container
+    restart: always
+    environment:
+      MYSQL_DATABASE: catz
+      MYSQL_ROOT_PASSWORD: catzPassword
+    networks:
+      - app-network
+  webserver:
+    build: ./webserver/
+    hostname: webserver-container
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
