@@ -1,0 +1,35 @@
+FROM node:alpine as build
+
+RUN apk add --no-cache bash
+
+RUN mkdir -p /usr/app
+WORKDIR /usr/app
+
+COPY package.json /usr/app
+RUN npm install --quiet
+RUN npm install -g --quiet @angular/cli
+
+COPY . /usr/app
+
+# run tests
+# RUN ng test --watch=false
+# RUN ng e2e --port 4202
+
+# generate build
+RUN ng build --output-path=dist
+
+############
+### prod ###
+############
+
+# base image
+FROM nginx:1.16.0-alpine
+
+# copy artifact build from the 'build environment'
+COPY --from=build /usr/app/dist /usr/share/nginx/html
+
+# expose port 80
+EXPOSE 80
+
+# run nginx
+CMD ["nginx", "-g", "daemon off;"]

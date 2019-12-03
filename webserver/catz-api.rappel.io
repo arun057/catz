@@ -1,5 +1,5 @@
 server {
-    listen 80;
+    listen 80 default_server;
     server_name catz-api.rappel.io;
     location / {
         proxy_pass http://localhost:3000;
@@ -8,5 +8,10 @@ server {
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
-     }
+    }
+
+    location /elb-status {
+        access_log off;
+        return 200;
+    }
 }

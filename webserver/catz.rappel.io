@@ -1,12 +1,10 @@
 server {
     listen 80;
     server_name catz.rappel.io;
+    index index.html;
+    root   /var/www/frontend;
+
     location / {
-        proxy_pass http://localhost:4200;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-     }
+        try_files $uri$args $uri$args/ /index.html;
+    }
 }
