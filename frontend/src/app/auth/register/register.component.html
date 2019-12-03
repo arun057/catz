@@ -1,0 +1,42 @@
+<div class="center-container">
+  <div class="container-box">
+    <div class="logo">Register a new cat!</div>
+    <div class="register-item">
+      <form #myform="ngForm" (ngSubmit)="register(myform)" class="form form-register">
+        <div class="form-field">
+          <label class="calendar" for="register-birthdate"><span class="hidden">Birthdate</span></label>
+          <input name="birthdate" id="register-birthdate" type="date" class="form-input" placeholder="Birthdate" ngModel>
+        </div>
+        <div class="form-field">
+          <label class="info" for="register-breed"><span class="hidden">Breed</span></label>
+          <input name="breed" id="register-breed" type="text" class="form-input" placeholder="Breed" ngModel>
+        </div>
+        <div class="form-field">
+          <label class="info" for="register-imageUrl"><span class="hidden">Image Url</span></label>
+          <input name="imageUrl" id="register-imageUrl" type="text" class="form-input" placeholder="Image Url" ngModel>
+        </div>
+        <div class="form-field">
+          <label class="user" for="register-name"><span class="hidden">Name</span></label>
+          <input name="name" id="register-name" type="text" class="form-input" placeholder="Name" ngModel required>
+        </div>
+        <div class="form-field">
+          <label class="user" for="register-username"><span class="hidden">Username</span></label>
+          <input name="username" id="register-username" type="text" class="form-input" placeholder="Username" ngModel required>
+        </div>
+        <div class="form-field">
+          <label class="lock" for="register-password"><span class="hidden">Password</span></label>
+          <input name="password" id="register-password" type="password" class="form-input" placeholder="Password" ngModel
+            required minlength="8">
+        </div>
+        <div class="form-field">
+          <label class="user" for="register-weight"><span class="hidden">Weight</span></label>
+          <input name="weight" id="register-weight" type="text" class="form-input" placeholder="Weight" ngModel>
+        </div>
+        <div class="form-field">
+          <input type="submit" value="Register">
+        </div>
+        <a routerLink="/auth/login" routerLinkActive="active">Registered already? Login</a>
+      </form>
+    </div>
+  </div>
+</div>

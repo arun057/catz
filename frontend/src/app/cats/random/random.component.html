@@ -1,0 +1,15 @@
+<div class="container">
+  <a routerLink="/cats" routerLinkActive="active">All cats</a>
+  <div class="card">
+    <div *ngIf="cat.imageUrl">
+      <img src="{{cat.imageUrl}}" alt="Cat" style="width:100%">
+    </div>
+    <div *ngIf="!cat.imageUrl">
+      <img src="assets/Placeholder-pet.png" alt="Cat" style="width:100%">
+    </div>
+    <div class="cardbox">
+      <h4><b>{{cat.name}}</b></h4>
+      <p>{{cat.breed}}</p>
+    </div>
+  </div>
+</div>

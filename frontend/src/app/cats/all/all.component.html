@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="header">
+    <a routerLink="/cats/random" routerLinkActive="active">Random Cat</a>
+  </div>
+  <div class=".break"></div>
+  <div class="search">
+    <form #myform="ngForm" (ngSubmit)="search(myform)" class="form form-search">
+        <input name="name" id="search-name" type="text" class="form-input" placeholder="Name" ngModel>
+        <input name="username" id="search-username" type="text" class="form-input" placeholder="Username" ngModel>
+        <input name="id" id="search-id" type="text" class="form-input" placeholder="id" ngModel>
+        <input type="submit" value="Search">
+    </form>
+  </div>
+  <div class=".break"></div>
+  <div *ngFor="let cat of cats | async">
+    <div class="card">
+      <div *ngIf="cat.imageUrl">
+        <img src="{{cat.imageUrl}}" alt="Cat" style="width:100%">
+      </div>
+      <div *ngIf="!cat.imageUrl">
+        <img src="assets/Placeholder-pet.png" alt="Cat" style="width:100%">
+      </div>
+      <div class="cardbox">
+        <h4><b>{{cat.name}}</b></h4>
+        <p><b>Breed: </b>{{cat.breed}}</p>
+        <p><b>Birthdate: </b>{{cat.birthdate | date: 'MM/dd/yyyy' }}</p>
+        <p><b>id: </b>{{cat.id}}</p>
+        <p><b>username: </b>{{cat.username}}</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!(cats | async).length">
+    <h2>No Cats Found.</h2>
+  </div>
+</div>
